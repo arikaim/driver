@@ -65,7 +65,7 @@ class DriverManager implements DriverManagerInterface
       * Install driver
       *
       * @param string|object $name Driver name
-      * @param string $class full class name or driver object ref
+      * @param string|null $class full class name or driver object ref
       * @param string|null $category
       * @param string|null $title
       * @param string|null $description
@@ -74,9 +74,9 @@ class DriverManager implements DriverManagerInterface
       * @param string|null $extension
       * @return boolean
     */
-    public function install($name, $class, $category = null, $title = null, $description = null, $version = null, $config = [], $extension = null)
+    public function install($name, $class = null, $category = null, $title = null, $description = null, $version = null, $config = [], $extension = null)
     {      
-        $info = (is_object($name) == true) ? $this->getDriverParams($name) : false;
+        $info = $this->getDriverParams($name);
 
         if ($info == false) {
             $version = (empty($verison) == true) ? '1.0.0' : $version;
@@ -92,7 +92,7 @@ class DriverManager implements DriverManagerInterface
             ];
         }
 
-        return $this->driverRegistry->addDriver($name,$info);
+        return $this->driverRegistry->addDriver($info['name'],$info);
     }
 
     /**
@@ -104,7 +104,11 @@ class DriverManager implements DriverManagerInterface
     protected function getDriverParams($driver)
     {
         $driver = (is_string($driver) == true && class_exists($driver) == true) ? Factory::createInstance($driver) : $driver;   
-    
+        
+        if (is_object($driver) == false) {
+            return false;
+        }
+
         $properties = new Properties();   
         $callback = function() use($driver,$properties) {
             $driver->createDriverConfig($properties);   
@@ -120,9 +124,7 @@ class DriverManager implements DriverManagerInterface
             'description' => $driver->getDriverDescription(),
             'version'     => $driver->getDriverVersion(),
             'config'      => $config
-        ];
-
-        return false;
+        ];        
     }
 
     /**
@@ -194,8 +196,6 @@ class DriverManager implements DriverManagerInterface
      */
     public function getList($category = null, $status = null)
     {
-        $status = (empty($status) == true) ? 1 : $status;
-
         return $this->driverRegistry->getDriversList($category,$status);
     }
 
