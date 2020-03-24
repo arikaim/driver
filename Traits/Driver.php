@@ -64,6 +64,13 @@ trait Driver
     protected $driverConfig;
     
     /**
+     * Driver options
+     *
+     * @var array
+     */
+    protected $driverOptions = [];
+
+    /**
      * Driver extension name
      *
      * @var string
@@ -189,7 +196,7 @@ trait Driver
      * @param string|null $version
      * @param string|null $extension
      * @return void
-     */
+    */
     public function setDriverParams($name, $category = null, $title = null, $description = null, $version = null, $extension = null, $class = null)
     {
         $this->driverName = $name;
@@ -221,5 +228,29 @@ trait Driver
      */
     public function createDriverConfig($properties)
     {
+    }
+
+    /**
+     * Get driver option
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getDriverOption($name, $default = null)
+    {
+        return (isset($this->driverOptions[$name]) == true) ? $this->driverOptions[$name] : $default;
+    }
+
+    /**
+     * Set driver option
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function setDriverOption($name, $value)
+    {
+        $this->driverOptions[$name] = $value;
     }
 }

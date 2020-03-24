@@ -109,13 +109,14 @@ class DriverManager implements DriverManagerInterface
             return false;
         }
 
-        $properties = new Properties();   
+        $properties = new Properties([],false);   
         $callback = function() use($driver,$properties) {
             $driver->createDriverConfig($properties);   
             return $properties;
         };
+      
         $config = $callback()->toArray();     
-                    
+        
         return [
             'name'        => $driver->getDriverName(),
             'category'    => $driver->getDriverCategory(),
@@ -183,7 +184,7 @@ class DriverManager implements DriverManagerInterface
     public function getConfig($name)
     {
         $config = $this->driverRegistry->getDriverConfig($name);
-    
+        
         return PropertiesFactory::createFromArray($config);         
     }
 
