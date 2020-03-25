@@ -253,4 +253,25 @@ trait Driver
     {
         $this->driverOptions[$name] = $value;
     }
+
+    /**
+     * Set driver options
+     *
+     * @param array $options
+     * @return void
+     */
+    public function setDriverOptions(array $options)
+    {
+        $this->driverOptions = $options;
+    } 
+
+    /**
+     * Get driver options
+     *    
+     * @return array
+     */
+    public function getDriverOptions()
+    {
+        return $this->driverOptions;
+    } 
 }

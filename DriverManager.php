@@ -42,9 +42,10 @@ class DriverManager implements DriverManagerInterface
      * Create driver
      *
      * @param string $name Driver name 
+     * @param array $options  
      * @return DriverInterface|false
      */
-    public function create($name)
+    public function create($name, $options = [])
     {       
         $driverInfo = $this->driverRegistry->getDriver($name);
         if ($driverInfo === false) {          
@@ -54,7 +55,8 @@ class DriverManager implements DriverManagerInterface
         $properties = PropertiesFactory::createFromArray($driverInfo['config']); 
         $driver = Factory::createInstance($driverInfo['class']); 
 
-        if ($driver instanceof DriverInterface) {               
+        if ($driver instanceof DriverInterface) {
+            $driver->setDriverOptions($options);               
             $driver->initDriver($properties);           
         } 
 
