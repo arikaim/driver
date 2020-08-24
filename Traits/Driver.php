@@ -161,7 +161,7 @@ trait Driver
      */
     public function getDriverClass()
     {
-        return (empty($this->driverClass) == true) ? get_class() : $this->driverClass;
+        return (empty($this->driverClass) == true) ? \get_class() : $this->driverClass;
     }
 
     /**
@@ -182,7 +182,7 @@ trait Driver
      */
     public function getDriverConfig()
     {
-        return (is_array($this->driverConfig) == true) ? $this->driverConfig : [];
+        return (\is_array($this->driverConfig) == true) ? $this->driverConfig : [];
     }
 
     /**

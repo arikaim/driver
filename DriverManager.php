@@ -76,7 +76,14 @@ class DriverManager implements DriverManagerInterface
       * @param string|null $extension
       * @return boolean
     */
-    public function install($name, $class = null, $category = null, $title = null, $description = null, $version = null, $config = [], $extension = null)
+    public function install($name, 
+        $class = null,
+        $category = null,
+        $title = null,
+        $description = null,
+        $version = null,
+        $config = [],
+        $extension = null)
     {      
         $info = $this->getDriverParams($name);
 
@@ -105,9 +112,9 @@ class DriverManager implements DriverManagerInterface
      */
     protected function getDriverParams($driver)
     {
-        $driver = (is_string($driver) == true && class_exists($driver) == true) ? Factory::createInstance($driver) : $driver;   
+        $driver = (\is_string($driver) == true && \class_exists($driver) == true) ? Factory::createInstance($driver) : $driver;   
         
-        if (is_object($driver) == false) {
+        if (\is_object($driver) == false) {
             return false;
         }
 
@@ -172,7 +179,7 @@ class DriverManager implements DriverManagerInterface
      */
     public function saveConfig($name, $config)
     {            
-        $config = (is_object($config) == true) ? $config->toArray() : $config;
+        $config = (\is_object($config) == true) ? $config->toArray() : $config;
 
         return $this->driverRegistry->saveConfig($name,$config);
     }
