@@ -101,7 +101,7 @@ trait Driver
      */
     public function getInstance()
     {
-        return (empty($this->instance) == true) ? $this : $this->instance;
+        return $this->instance ?? $this;
     }
 
     /**
@@ -111,7 +111,7 @@ trait Driver
      */
     public function getDriverTitle()
     {
-        return (empty($this->driverTitle) == true) ? $this->getDriverName() : $this->driverTitle;
+        return $this->driverTitle ?? $this->getDriverName();
     }
 
     /**
@@ -161,7 +161,7 @@ trait Driver
      */
     public function getDriverClass()
     {
-        return (empty($this->driverClass) == true) ? \get_class() : $this->driverClass;
+        return $this->driverClass ?? \get_class();
     }
 
     /**
@@ -197,14 +197,20 @@ trait Driver
      * @param string|null $extension
      * @return void
     */
-    public function setDriverParams($name, $category = null, $title = null, $description = null, $version = null, $extension = null, $class = null)
+    public function setDriverParams($name, 
+        $category = null,
+        $title = null,
+        $description = null,
+        $version = null,
+        $extension = null,
+        $class = null)
     {
         $this->driverName = $name;
         $this->driverCategory = $category;
         $this->driverTitle = $title;
         $this->driverClass = $class;
         $this->driverDescription = $description;
-        $this->driverVersion = (empty($version) == true) ? '1.0.0' : $version;
+        $this->driverVersion = $version ?? '1.0.0';
         $this->driverExtension = $extension;
     }
 
@@ -239,7 +245,7 @@ trait Driver
      */
     public function getDriverOption($name, $default = null)
     {
-        return (isset($this->driverOptions[$name]) == true) ? $this->driverOptions[$name] : $default;
+        return $this->driverOptions[$name] ?? $default;
     }
 
     /**
