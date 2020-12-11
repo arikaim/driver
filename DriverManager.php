@@ -43,16 +43,19 @@ class DriverManager implements DriverManagerInterface
      *
      * @param string $name Driver name 
      * @param array $options  
+     * @param array|null $config Drievr config properties
      * @return DriverInterface|false
      */
-    public function create($name, $options = [])
+    public function create($name, $options = [], $config = null)
     {       
         $driverInfo = $this->driverRegistry->getDriver($name);
         if ($driverInfo === false) {          
             return false;
         }
       
-        $properties = PropertiesFactory::createFromArray($driverInfo['config']); 
+        $config = $config ?? $driverInfo['config'];
+
+        $properties = PropertiesFactory::createFromArray($config); 
         $driver = Factory::createInstance($driverInfo['class']); 
 
         if ($driver instanceof DriverInterface) {
@@ -87,7 +90,7 @@ class DriverManager implements DriverManagerInterface
     {      
         $info = $this->getDriverParams($name);
 
-        if ($info == false) {
+        if (\is_array($info) == false) {
             $version = (empty($verison) == true) ? '1.0.0' : $version;
             $info = [
                 'name'           => $name,
@@ -120,7 +123,7 @@ class DriverManager implements DriverManagerInterface
 
         $properties = new Properties([],false);   
         $callback = function() use($driver,$properties) {
-            $driver->createDriverConfig($properties);   
+            $driver->createDriverConfig($properties);           
             return $properties;
         };
       
