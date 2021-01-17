@@ -61,7 +61,7 @@ trait Driver
      *
      * @var array
      */
-    protected $driverConfig;
+    protected $driverConfig = [];
     
     /**
      * Driver options
@@ -89,7 +89,7 @@ trait Driver
      *
      * @return string
      */
-    public function getDriverName()
+    public function getDriverName(): string
     {
         return $this->driverName;
     }
@@ -107,9 +107,9 @@ trait Driver
     /**
      * Return driver display name.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDriverTitle()
+    public function getDriverTitle(): ?string
     {
         return $this->driverTitle ?? $this->getDriverName();
     }
@@ -117,9 +117,9 @@ trait Driver
     /**
      * Return driver description.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDriverDescription()
+    public function getDriverDescription(): ?string
     {
         return $this->driverDescription;
     }
@@ -127,9 +127,9 @@ trait Driver
     /**
      * Return driver category.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDriverCategory()
+    public function getDriverCategory(): ?string
     {
         return $this->driverCategory;
     }
@@ -137,9 +137,9 @@ trait Driver
     /**
      * Return driver version.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDriverVersion()
+    public function getDriverVersion(): ?string
     {
         return $this->driverVersion;
     }
@@ -147,9 +147,9 @@ trait Driver
     /**
      * Return driver extension name (if driver class is located in extension)
      *
-     * @return string
+     * @return string|null
     */
-    public function getDriverExtensionName()
+    public function getDriverExtensionName(): ?string
     {
         return $this->driverExtension;
     }
@@ -159,7 +159,7 @@ trait Driver
      *
      * @return string
      */
-    public function getDriverClass()
+    public function getDriverClass(): string
     {
         return $this->driverClass ?? \get_class();
     }
@@ -170,7 +170,7 @@ trait Driver
      * @param string $class
      * @return void
      */
-    public function setDriverClass($class)
+    public function setDriverClass(string $class): void
     {
         $this->driverClass = $class;
     }
@@ -180,7 +180,7 @@ trait Driver
      *
      * @return array
      */
-    public function getDriverConfig()
+    public function getDriverConfig(): array
     {
         return (\is_array($this->driverConfig) == true) ? $this->driverConfig : [];
     }
@@ -243,7 +243,7 @@ trait Driver
      * @param mixed $default
      * @return mixed
      */
-    public function getDriverOption($name, $default = null)
+    public function getDriverOption(string $name, $default = null)
     {
         return $this->driverOptions[$name] ?? $default;
     }
@@ -255,7 +255,7 @@ trait Driver
      * @param mixed $value
      * @return void
      */
-    public function setDriverOption($name, $value)
+    public function setDriverOption(string $name, $value): void
     {
         $this->driverOptions[$name] = $value;
     }
@@ -266,7 +266,7 @@ trait Driver
      * @param array $options
      * @return void
      */
-    public function setDriverOptions(array $options)
+    public function setDriverOptions(array $options): void
     {
         $this->driverOptions = $options;
     } 
@@ -276,7 +276,7 @@ trait Driver
      *    
      * @return array
      */
-    public function getDriverOptions()
+    public function getDriverOptions(): array
     {
         return $this->driverOptions;
     } 

@@ -46,7 +46,7 @@ class DriverManager implements DriverManagerInterface
      * @param array|null $config Drievr config properties
      * @return DriverInterface|false
      */
-    public function create($name, $options = [], $config = null)
+    public function create(string $name, array $options = [], ?array $config = null)
     {       
         $driverInfo = $this->driverRegistry->getDriver($name);
         if ($driverInfo === false) {          
@@ -79,19 +79,20 @@ class DriverManager implements DriverManagerInterface
       * @param string|null $extension
       * @return boolean
     */
-    public function install($name, 
-        $class = null,
-        $category = null,
-        $title = null,
-        $description = null,
-        $version = null,
-        $config = [],
-        $extension = null)
+    public function install(
+        $name, 
+        ?string $class = null,
+        ?string $category = null,
+        ?string $title = null,
+        ?string $description = null,
+        ?string $version = null,
+        array $config = [],
+        ?string $extension = null): bool
     {      
         $info = $this->getDriverParams($name);
 
         if (\is_array($info) == false) {
-            $version = (empty($verison) == true) ? '1.0.0' : $version;
+            $version = $version ?? '1.0.0';
             $info = [
                 'name'           => $name,
                 'category'       => $category,
@@ -146,7 +147,7 @@ class DriverManager implements DriverManagerInterface
      * @param string $name Driver name   
      * @return boolean
      */
-    public function unInstall($name)
+    public function unInstall(string $name): bool
     {
         return $this->driverRegistry->removeDriver($name);       
     }
@@ -157,7 +158,7 @@ class DriverManager implements DriverManagerInterface
      * @param string $name Driver name
      * @return boolean
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return $this->driverRegistry->hasDriver($name);
     }
@@ -168,7 +169,7 @@ class DriverManager implements DriverManagerInterface
      * @param string $name Driver name
      * @return object|false
      */
-    public function getDriver($name)
+    public function getDriver(string $name)
     {
         return $this->driverRegistry->getDriver($name);
     }
@@ -180,7 +181,7 @@ class DriverManager implements DriverManagerInterface
      * @param array|object $config
      * @return boolean
      */
-    public function saveConfig($name, $config)
+    public function saveConfig(string $name, $config): bool
     {            
         $config = (\is_object($config) == true) ? $config->toArray() : $config;
 
@@ -193,7 +194,7 @@ class DriverManager implements DriverManagerInterface
      * @param string $name Driver name
      * @return Properties
      */
-    public function getConfig($name)
+    public function getConfig(string $name)
     {
         $config = $this->driverRegistry->getDriverConfig($name);
         
@@ -207,7 +208,7 @@ class DriverManager implements DriverManagerInterface
      * @param integer|null  $status
      * @return array
      */
-    public function getList($category = null, $status = null)
+    public function getList(?string $category = null, ?int $status = null): array
     {
         return $this->driverRegistry->getDriversList($category,$status);
     }
@@ -218,7 +219,7 @@ class DriverManager implements DriverManagerInterface
      * @param string $name
      * @return boolean
      */
-    public function enable($name)
+    public function enable(string $name): bool
     {
         return $this->driverRegistry->setDriverStatus($name,1);
     }
@@ -229,7 +230,7 @@ class DriverManager implements DriverManagerInterface
      * @param string $name
      * @return boolean
      */
-    public function disable($name)
+    public function disable(string $name): bool
     {
         return $this->driverRegistry->setDriverStatus($name,0);
     }
