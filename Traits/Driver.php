@@ -17,7 +17,7 @@ trait Driver
     /**
      * Driver name
      *
-     * @var string
+     * @var string|null
     */
     protected $driverName = null;
 
@@ -38,21 +38,21 @@ trait Driver
     /**
      * Driver title (display name)
      *
-     * @var string
+     * @var string|null
      */
     protected $driverTitle = null;
 
     /**
      * Driver description
      *
-     * @var string
+     * @var string|null
      */
     protected $driverDescription = null;
 
     /**
      * Driver category
      *
-     * @var string
+     * @var string|null
      */
     protected $driverCategory = null;
 
@@ -73,9 +73,9 @@ trait Driver
     /**
      * Driver extension name
      *
-     * @var string
+     * @var string|null
      */
-    protected $driverExtension;
+    protected $driverExtension = null;
 
     /**
      * Driver instance
@@ -182,7 +182,30 @@ trait Driver
      */
     public function getDriverConfig(): array
     {
-        return (\is_array($this->driverConfig) == true) ? $this->driverConfig : [];
+        return $this->driverConfig ?? [];
+    }
+
+    /**
+     * Set driver config
+     *
+     * @param array $config
+     * @return void
+     */
+    public function setDriverConfig(array $config): void
+    {
+        $this->driverConfig = $config;
+    }
+
+    /**
+     * Get driver config var
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getDriverConfigVar(string $key, $default = null)
+    {
+        return $this->driverConfig[$key] ?? $default;
     }
 
     /**
@@ -197,13 +220,14 @@ trait Driver
      * @param string|null $extension
      * @return void
     */
-    public function setDriverParams($name, 
-        $category = null,
-        $title = null,
-        $description = null,
-        $version = null,
-        $extension = null,
-        $class = null)
+    public function setDriverParams(
+        string $name, 
+        ?string $category = null,
+        ?string $title = null,
+        ?string $description = null,
+        ?string $version = null,
+        ?string $extension = null,
+        ?string $class = null)
     {
         $this->driverName = $name;
         $this->driverCategory = $category;

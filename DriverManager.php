@@ -59,7 +59,8 @@ class DriverManager implements DriverManagerInterface
         $driver = Factory::createInstance($driverInfo['class']); 
 
         if ($driver instanceof DriverInterface) {
-            $driver->setDriverOptions($options);               
+            $driver->setDriverOptions($options);  
+            $driver->setDriverConfig($properties->getValues());             
             $driver->initDriver($properties);           
         } 
 
