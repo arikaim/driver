@@ -89,7 +89,7 @@ trait Driver
      *
      * @return string
      */
-    public function getDriverName(): string
+    public function getDriverName(): ?string
     {
         return $this->driverName;
     }
