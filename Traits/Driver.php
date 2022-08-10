@@ -254,7 +254,7 @@ trait Driver
      *
      * @param Arikaim\Core\Collection\Properties $properties;
      * 
-     * @return array
+     * @return void
      */
     public function createDriverConfig($properties)
     {

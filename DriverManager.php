@@ -44,27 +44,27 @@ class DriverManager implements DriverManagerInterface
      * @param string $name Driver name 
      * @param array $options  
      * @param array|null $config Drievr config properties
-     * @return DriverInterface|false
+     * @return DriverInterface|null
      */
-    public function create(string $name, array $options = [], ?array $config = null)
+    public function create(string $name, array $options = [], ?array $config = null): ?object
     {       
         $driverInfo = $this->driverRegistry->getDriver($name);
         if ($driverInfo === false) {          
-            return false;
+            return null;
         }
       
-        $config = $config ?? $driverInfo['config'];
-
-        $properties = PropertiesFactory::createFromArray($config); 
+        $properties = PropertiesFactory::createFromArray($config ?? $driverInfo['config']); 
         $driver = Factory::createInstance($driverInfo['class']); 
 
         if ($driver instanceof DriverInterface) {
             $driver->setDriverOptions($options);  
             $driver->setDriverConfig($properties->getValues());             
-            $driver->initDriver($properties);           
+            $driver->initDriver($properties);  
+            
+            return $driver;
         } 
 
-        return $driver;
+        return null;
     }
 
     /**
@@ -92,15 +92,14 @@ class DriverManager implements DriverManagerInterface
     {      
         $info = $this->getDriverParams($name);
 
-        if (\is_array($info) == false) {
-            $version = $version ?? '1.0.0';
+        if ($info == null) {
             $info = [
                 'name'           => $name,
                 'category'       => $category,
                 'title'          => $title,
                 'class'          => $class,
                 'description'    => $description,
-                'version'        => $version,
+                'version'        => $version ?? '1.0.0',
                 'extension_name' => $extension,
                 'config'         => $config
             ];
@@ -113,24 +112,22 @@ class DriverManager implements DriverManagerInterface
      * Get driver params
      *
      * @param string|object $driver Driver obj ref or driver class
-     * @return array|false
+     * @return array|null
      */
-    protected function getDriverParams($driver)
+    protected function getDriverParams($driver): ?array
     {
         $driver = (\is_string($driver) == true && \class_exists($driver) == true) ? Factory::createInstance($driver) : $driver;   
-        
         if (\is_object($driver) == false) {
-            return false;
+            return null;
         }
 
         $properties = new Properties([],false);   
+        
         $callback = function() use($driver,$properties) {
             $driver->createDriverConfig($properties);           
             return $properties;
         };
       
-        $config = $callback()->toArray();     
-        
         return [
             'name'        => $driver->getDriverName(),
             'category'    => $driver->getDriverCategory(),
@@ -138,7 +135,7 @@ class DriverManager implements DriverManagerInterface
             'class'       => $driver->getDriverClass(),
             'description' => $driver->getDriverDescription(),
             'version'     => $driver->getDriverVersion(),
-            'config'      => $config
+            'config'      => $callback()->toArray()
         ];        
     }
 

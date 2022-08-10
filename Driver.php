@@ -18,11 +18,4 @@ use Arikaim\Core\Driver\Traits\Driver as DriverTrait;
 class Driver implements DriverInterface
 {
     use DriverTrait;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-    }
 }
