@@ -116,8 +116,8 @@ class DriverManager implements DriverManagerInterface
      */
     protected function getDriverParams($driver): ?array
     {
-        $driver = (\is_string($driver) == true && \class_exists($driver) == true) ? Factory::createInstance($driver) : $driver;   
-        if (\is_object($driver) == false) {
+        $driver = (\is_string($driver) == true) ? Factory::createInstance($driver) : $driver;   
+        if ($driver == null) {
             return null;
         }
 
