@@ -121,7 +121,7 @@ class DriverManager implements DriverManagerInterface
             return null;
         }
 
-        $properties = new Properties([],false);   
+        $properties = new Properties([]);   
         
         $callback = function() use($driver,$properties) {
             $driver->createDriverConfig($properties);           
