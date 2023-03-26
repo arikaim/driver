@@ -88,7 +88,9 @@ class DriverManager implements DriverManagerInterface
         ?string $description = null,
         ?string $version = null,
         array $config = [],
-        ?string $extension = null): bool
+        ?string $packageName = null,
+        ?string $packageType = null
+    ): bool
     {      
         $info = $this->getDriverParams($name);
 
@@ -99,12 +101,17 @@ class DriverManager implements DriverManagerInterface
                 'title'          => $title,
                 'class'          => $class,
                 'description'    => $description,
-                'version'        => $version ?? '1.0.0',
-                'extension_name' => $extension,
+                'version'        => $version ?? '1.0.0',               
                 'config'         => $config
             ];
         }
 
+        if ($packageType == 'module') {
+            $info['module_name'] = $packageName;
+        } else {
+            $info['extension_name'] = $packageName;
+        }
+        
         return $this->driverRegistry->addDriver($info['name'],$info);
     }
 
