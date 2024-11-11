@@ -161,7 +161,7 @@ trait Driver
      */
     public function getDriverClass(): string
     {
-        return $this->driverClass ?? \get_class();
+        return $this->driverClass ?? \get_class($this);
     }
 
     /**
